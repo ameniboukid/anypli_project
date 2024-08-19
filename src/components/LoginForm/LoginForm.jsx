@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginForm.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';  // Import useNavigate from react-router-dom
@@ -8,7 +8,12 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();  // Initialize useNavigate
-
+ 
+  // Changer le titre de la fenêtre
+  useEffect(() => {
+    document.title = 'Login';
+  }, []);
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     // Fixed password is "password123"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './NotesPage.css';
 
 const NotesPage = () => {
@@ -9,6 +9,12 @@ const NotesPage = () => {
   ]);
   const [newNote, setNewNote] = useState('');
   const [newNoteDate, setNewNoteDate] = useState('');
+
+  // Changer le titre de la fenêtre
+  useEffect(() => {
+    document.title = 'Notes Page';
+  }, []);
+
 
   const handleAddNote = () => {
     if (newNote.trim() && newNoteDate.trim()) {
