@@ -1,26 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import './LoginForm.css';
 import { FaUser, FaLock } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';  // Import useNavigate from react-router-dom
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const fixedUsername = 'ameni';  // Username fixe
+  const fixedPassword = 'password123';  // Password fixe
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();  // Initialize useNavigate
- 
-  // Changer le titre de la fenêtre
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = 'Login';
   }, []);
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Fixed password is "password123"
-    if (password === 'password123') {
-      navigate('/notes');  // Redirect to notes page
-    } else {
+
+    if (!username) {
+      setError('Username field required');
+    } else if (username !== fixedUsername) {
+      setError('Incorrect username');
+    } else if (!password) {
+      setError('Password field required');
+    } else if (password !== fixedPassword) {
       setError('Incorrect password');
+    } else {
+      navigate('/notes');  // Redirection vers la page des notes
     }
   };
 
@@ -63,6 +71,8 @@ const LoginForm = () => {
 }
 
 export default LoginForm;
+
+
 
 
 
