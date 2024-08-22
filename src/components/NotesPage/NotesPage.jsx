@@ -1,32 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './NotesPage.css';
 
 const NotesPage = () => {
-  const [notes, setNotes] = useState([
-    { text: 'Go to the gym', date: '2024-08-18 09:00' },
-    { text: 'Do my homework', date: '2024-08-18 14:00' },
-    { text: 'Complete my React project', date: '2024-08-18 18:00' }
-  ]);
-  const [newNote, setNewNote] = useState('');
-  const [newNoteDate, setNewNoteDate] = useState('');
+  const [notes, setNotes] = useState([]);
 
-  // Changer le titre de la fenêtre
   useEffect(() => {
-    document.title = 'Notes Page';
+    const storedNotes = JSON.parse(localStorage.getItem('notes')) || [];
+    setNotes(storedNotes);
   }, []);
 
-
-  const handleAddNote = () => {
-    if (newNote.trim() && newNoteDate.trim()) {
-      setNotes([...notes, { text: newNote, date: newNoteDate }]);
-      setNewNote('');
-      setNewNoteDate('');
-    }
-  };
+  const navigate = useNavigate();
 
   const handleDeleteNote = (index) => {
     const updatedNotes = notes.filter((_, i) => i !== index);
     setNotes(updatedNotes);
+    localStorage.setItem('notes', JSON.stringify(updatedNotes));
   };
 
   return (
@@ -39,22 +28,14 @@ const NotesPage = () => {
         </div>
       ))}
       <div className="add-note-card">
-        <textarea 
-          value={newNote}
-          onChange={(e) => setNewNote(e.target.value)}
-          placeholder="Add a new note..."
-        />
-        <input 
-          type="datetime-local"
-          value={newNoteDate}
-          onChange={(e) => setNewNoteDate(e.target.value)}
-        />
-        <button onClick={handleAddNote}>Add Note</button>
+        <button onClick={() => navigate('/add-note')}>Add Note</button>
       </div>
     </div>
   );
-}
+};
 
 export default NotesPage;
+
+
 
 
