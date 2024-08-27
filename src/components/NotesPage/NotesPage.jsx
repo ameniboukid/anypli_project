@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './NotesPage.css';
 
@@ -6,6 +6,24 @@ const NotesPage = () => {
     const navigate = useNavigate();
     const [notes, setNotes] = useState(JSON.parse(localStorage.getItem('notes')) || []);
     const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const checkReminders = () => {
+            const now = new Date().toISOString();
+            console.log("Checking reminders at:", now);
+
+            notes.forEach(note => {
+                console.log("Reminder:", note.reminder);
+                if (note.reminder && note.reminder <= now) {
+                    alert(`Reminder: ${note.text}`);
+                }
+            });
+        };
+
+        checkReminders(); // Appel immédiat pour vérifier
+        const interval = setInterval(checkReminders, 60000); // Vérifie toutes les minutes
+        return () => clearInterval(interval);
+    }, [notes]);
 
     const handleAddNote = () => {
         navigate('/add-note');
@@ -46,9 +64,10 @@ const NotesPage = () => {
                         {filteredNotes.length > 0 ? (
                             filteredNotes.map((note, index) => (
                                 <div
-key={index}
- className={`note ${note.text.toLowerCase().includes(searchTerm.toLowerCase()) ? 'highlight' : ''}`}
-onClick={() => handleNoteClick(notes.indexOf(note))} >
+                                    key={index}
+                                    className={`note ${note.text.toLowerCase().includes(searchTerm.toLowerCase()) ? 'highlight' : ''}`}
+                                    onClick={() => handleNoteClick(notes.indexOf(note))}
+                                >
                                     <p>{note.text}</p>
                                     <span>{note.date}</span>
                                     <button
@@ -75,6 +94,7 @@ onClick={() => handleNoteClick(notes.indexOf(note))} >
 };
 
 export default NotesPage;
+
 
 
 
